@@ -1,0 +1,9 @@
+services:
+  java:
+    image: eclipse-temurin:21-jdk
+    container_name: java21
+    working_dir: /app
+    volumes:
+      - .:/app
+    tty: true
+    stdin_open: true
