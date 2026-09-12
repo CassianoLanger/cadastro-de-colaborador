@@ -1,7 +1,7 @@
 package com.cadastro.colaborador.entity;
 
 
-public class ColaboradorProducao extends Colaborador {//extender classe colaborador principal
+public class ColaboradorProducao extends Colaborador {
 
     private double quantidadeProduzida;
     private double valorPorUnidade;
@@ -10,8 +10,8 @@ public class ColaboradorProducao extends Colaborador {//extender classe colabora
         super();
     }
 
-    public ColaboradorProducao(Long id, String nome, double salario, double quantidadeProduzida, double valorPorUnidade) {
-        super(id, nome, salario);
+    public ColaboradorProducao(int id, String nome, double salario, double quantidadeProduzida, double valorPorUnidade) {
+        super(Long.valueOf(id), nome, salario);
         this.quantidadeProduzida = quantidadeProduzida;
         this.valorPorUnidade = valorPorUnidade;
     }
