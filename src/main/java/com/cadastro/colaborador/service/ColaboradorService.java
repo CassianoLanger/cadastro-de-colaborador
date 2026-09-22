@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ColaboradorService {
     private final ColaboradorRepository colaboradorRepository;
-
     public Colaborador getColaborador(int id) {
         return colaboradorRepository.getColaboradorById(id);
     }

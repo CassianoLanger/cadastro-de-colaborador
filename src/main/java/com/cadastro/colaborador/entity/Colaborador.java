@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component;
 @Data
 @Builder
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class Colaborador {
     private Long id;
     private String nome;
     private double salario;
+    private TipoColaborador tipo;
 }
