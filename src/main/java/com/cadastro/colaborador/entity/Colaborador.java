@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Colaborador {
-    private Long id;
+    private int id;
     private String nome;
     private double salario;
     private TipoColaborador tipo;

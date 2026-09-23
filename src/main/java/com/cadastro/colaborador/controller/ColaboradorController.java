@@ -16,7 +16,18 @@ public class ColaboradorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Colaborador> getColaborador(@PathVariable("id") int id){
-        return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
+        return ResponseEntity.status(HttpStatus.FOUND).body(colaboradorService.getColaborador(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Colaborador> postColaborador(@RequestBody Colaborador colaborador){
+        return ResponseEntity.status(HttpStatus.CREATED).body(colaboradorService.saveColaborador(colaborador));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Colaborador> putColaborador(@RequestBody Colaborador colaborador,
+                                                      @PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
     @PostMapping
