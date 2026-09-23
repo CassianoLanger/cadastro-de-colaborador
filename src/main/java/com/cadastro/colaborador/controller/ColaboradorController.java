@@ -2,6 +2,7 @@ package com.cadastro.colaborador.controller;
 
 import com.cadastro.colaborador.entity.Colaborador;
 import com.cadastro.colaborador.service.ColaboradorService;
+import com.cadastro.colaborador.swagger.SwaggerColaborador;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/colaborador")
 @RequiredArgsConstructor
-public class ColaboradorController {
+public class ColaboradorController implements SwaggerColaborador<Colaborador> {
 
     private final ColaboradorService colaboradorService;
 
@@ -20,7 +21,6 @@ public class ColaboradorController {
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
-    // IMPROVE: Add @Valid and exception handling for invalid input
     @PostMapping
     public ResponseEntity<Colaborador> postColaborador(@RequestBody @Valid Colaborador colaborador){
         return ResponseEntity.status(HttpStatus.CREATED).body(colaboradorService.saveColaborador(colaborador));

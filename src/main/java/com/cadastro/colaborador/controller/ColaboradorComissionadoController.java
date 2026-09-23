@@ -1,8 +1,8 @@
 package com.cadastro.colaborador.controller;
 
-import com.cadastro.colaborador.entity.Colaborador;
 import com.cadastro.colaborador.entity.ColaboradorComissionado;
 import com.cadastro.colaborador.service.ColaboradorComissionadoService;
+import com.cadastro.colaborador.swagger.SwaggerColaborador;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
     @RequestMapping("/v1/colaborador/comissionado")
 @RequiredArgsConstructor
-public class ColaboradorComissionadoController {
+public class ColaboradorComissionadoController implements SwaggerColaborador<ColaboradorComissionado> {
 
     private final ColaboradorComissionadoService colaboradorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Colaborador> getColaborador(@PathVariable("id") int id){
+    public ResponseEntity<ColaboradorComissionado> getColaborador(@PathVariable("id") int id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
     @PostMapping
-    public ResponseEntity<Colaborador> postColaborador(@RequestBody @Valid ColaboradorComissionado colaborador){
+    public ResponseEntity<ColaboradorComissionado> postColaborador(@RequestBody @Valid ColaboradorComissionado colaborador){
         return ResponseEntity.status(HttpStatus.CREATED).body(colaboradorService.saveColaborador(colaborador));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Colaborador> putColaborador(@RequestBody @Valid ColaboradorComissionado colaborador,
+    public ResponseEntity<ColaboradorComissionado> putColaborador(@RequestBody @Valid ColaboradorComissionado colaborador,
                                                       @PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }

@@ -33,7 +33,7 @@ public class ColaboradorComissionadoService {
     }
 
     // IMPROVE (local): Preserve subclass fields (valorDasVendas, percentualDeComissao) locally
-    public Colaborador updateColaborador(ColaboradorComissionado colaborador, int id) {
+    public ColaboradorComissionado updateColaborador(ColaboradorComissionado colaborador, int id) {
         Colaborador colaboradorAtual =  getColaborador(id);
 
         if(isNull(colaboradorAtual)){
