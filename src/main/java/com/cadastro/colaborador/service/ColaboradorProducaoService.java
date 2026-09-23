@@ -7,29 +7,27 @@ import com.cadastro.colaborador.repository.ColaboradorProducaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 
-// IMPROVE (local only): In-memory service; ensure id consistency and preserve fields locally
 @Service
 @RequiredArgsConstructor
 public class ColaboradorProducaoService {
 
     private final ColaboradorProducaoRepository colaboradorRepository;
 
-    // IMPROVE: Avoid duplicating logic; use inheritance or composition
     public ColaboradorProducao getColaborador(int id) {
         return colaboradorRepository.getColaboradorById(id);
     }
 
     public ColaboradorProducao saveColaborador(ColaboradorProducao colaborador) {
-        int id = getAll().getLast().getId() + 1;
+        int id = new ServiceUtils<ColaboradorProducao>().newId(getAll());
         colaborador.setId(id);
         return colaboradorRepository.saveColaborador(colaborador);
     }
 
-    public List<ColaboradorProducao> getAll(){
+    public Map<Integer, ColaboradorProducao> getAll(){
         return colaboradorRepository.getAll();
     }
 

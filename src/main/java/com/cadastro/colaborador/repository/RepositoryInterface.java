@@ -1,6 +1,6 @@
 package com.cadastro.colaborador.repository;
 
-import java.util.List;
+import java.util.Map;
 
 public interface RepositoryInterface<T>{
 
@@ -8,7 +8,7 @@ public interface RepositoryInterface<T>{
 
     T saveColaborador(T t);
 
-    List<T> getAll();
+    Map<Integer,T> getAll();
 
     T update(T t);
 

@@ -5,26 +5,17 @@ import com.cadastro.colaborador.entity.TipoColaborador;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 // IMPROVE (local only): Use ConcurrentHashMap or synchronized access for in-memory thread safety; use Map for id lookup
 @Repository
 public class ColaboradorProducaoRepository implements RepositoryInterface<ColaboradorProducao> {
 
-    private final List<ColaboradorProducao> colaboradores = new ArrayList<>();
+    private final Map<Integer, ColaboradorProducao> colaboradores = new HashMap<>();
 
     public ColaboradorProducaoRepository() {
-        colaboradores.add(
-                ColaboradorProducao.builder()
-                        .id(0)
-                        .nome("Carlos")
-                        .salario(new BigDecimal("4200"))
-                        .tipo(TipoColaborador.PRODUCAO)
-                        .quantidadeProduzida(100)
-                        .valorPagoPorUnidade(42)
-                        .build()
-        );
+        mockColaborador();
     }
 
     // IMPROVE (local): Search by id, not index
@@ -36,12 +27,12 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
     // IMPROVE (local): Check for duplicates; generate id locally
     @Override
     public ColaboradorProducao saveColaborador(ColaboradorProducao colaborador) {
-        colaboradores.add(colaborador);
+        colaboradores.put(colaborador.getId(), colaborador);
         return colaborador;
     }
 
     @Override
-    public List<ColaboradorProducao> getAll() {
+    public Map<Integer, ColaboradorProducao> getAll() {
         return colaboradores;
     }
 
@@ -50,7 +41,7 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
     public ColaboradorProducao update(
             ColaboradorProducao colaboradorAtualizado) {
 
-        colaboradores.set(
+        colaboradores.put(
                 colaboradorAtualizado.getId(),
                 colaboradorAtualizado
         );
@@ -61,6 +52,17 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
     // IMPROVE (local): Search by object properly; ensure equals/hashCode work
     @Override
     public void delete(ColaboradorProducao colaborador) {
-        colaboradores.remove(colaborador);
+        colaboradores.remove(colaborador.getId());
+    }
+
+    void mockColaborador(){
+        colaboradores.put(1, ColaboradorProducao.builder()
+                .id(0)
+                .nome("Carlos")
+                .salario(new BigDecimal("4200"))
+                .tipo(TipoColaborador.PRODUCAO)
+                .quantidadeProduzida(100)
+                .valorPagoPorUnidade(42)
+                .build());
     }
 }

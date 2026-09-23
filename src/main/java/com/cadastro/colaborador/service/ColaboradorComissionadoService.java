@@ -2,11 +2,11 @@ package com.cadastro.colaborador.service;
 
 import com.cadastro.colaborador.entity.Colaborador;
 import com.cadastro.colaborador.entity.ColaboradorComissionado;
-import com.cadastro.colaborador.repository.ColaboradorRepository;
+import com.cadastro.colaborador.repository.ColaboradorComissionadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 
@@ -15,34 +15,32 @@ import static java.util.Objects.isNull;
 @Service
 @RequiredArgsConstructor
 public class ColaboradorComissionadoService {
-    // IMPROVE (local): Inject ComissionadoRepository; avoid duplicating base logic
-    private final ColaboradorRepository colaboradorRepository;
 
-    // IMPROVE (local): Avoid duplicating logic; use inheritance/composition for local services
-    public Colaborador getColaborador(int id) {
+    private final ColaboradorComissionadoRepository colaboradorRepository;
+
+    public ColaboradorComissionado getColaborador(int id) {
         return colaboradorRepository.getColaboradorById(id);
     }
 
-    // IMPROVE (local): Use specific local repository and preserve subclass fields
-    public Colaborador saveColaborador(Colaborador colaborador) {
-        int id = getAll().getLast().getId() + 1;
+    public ColaboradorComissionado saveColaborador(ColaboradorComissionado colaborador) {
+        int id = new ServiceUtils<ColaboradorComissionado>().newId(getAll());
         colaborador.setId(id);
         return colaboradorRepository.saveColaborador(colaborador);
     }
     
-    public List<Colaborador> getAll(){
+    public Map<Integer, ColaboradorComissionado> getAll(){
         return colaboradorRepository.getAll();
     }
 
     // IMPROVE (local): Preserve subclass fields (valorDasVendas, percentualDeComissao) locally
-    public Colaborador updateColaborador(Colaborador colaborador, int id) {
+    public Colaborador updateColaborador(ColaboradorComissionado colaborador, int id) {
         Colaborador colaboradorAtual =  getColaborador(id);
 
         if(isNull(colaboradorAtual)){
             throw new NullPointerException("Colaborador não encontrado");
         }
 
-        Colaborador colaboradorAtualizado = Colaborador.builder()
+        ColaboradorComissionado colaboradorAtualizado = ColaboradorComissionado.builder()
                 .id(id)
                 .nome(colaborador.getNome())
                 .salario(colaborador.getSalario())

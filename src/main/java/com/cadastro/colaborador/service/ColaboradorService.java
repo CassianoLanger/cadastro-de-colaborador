@@ -5,11 +5,10 @@ import com.cadastro.colaborador.repository.ColaboradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 
-// IMPROVE (local only): No DB transactions needed; handle consistency manually if required
 @Service
 @RequiredArgsConstructor
 public class ColaboradorService {
@@ -20,15 +19,16 @@ public class ColaboradorService {
         return colaboradorRepository.getColaboradorById(id);
     }
 
-    // IMPROVE (local): Generate id safely (AtomicInteger or max id + 1), not fragile getLast
     public Colaborador saveColaborador(Colaborador colaborador) {
-        int id = getAll().getLast().getId() + 1;
+
+        int id = new ServiceUtils<Colaborador>().newId(getAll());
         colaborador.setId(id);
+
         return colaboradorRepository.saveColaborador(colaborador);
     }
     
     // IMPROVE (local): Consider pagination or filtering since all data is in memory
-    public List<Colaborador> getAll(){
+    public Map<Integer, Colaborador> getAll(){
         return colaboradorRepository.getAll();
     }
 
