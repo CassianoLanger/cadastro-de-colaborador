@@ -1,31 +1,65 @@
 package com.cadastro.colaborador.repository;
 
 import com.cadastro.colaborador.entity.ColaboradorComissionado;
+import com.cadastro.colaborador.entity.TipoColaborador;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+// IMPROVE (local only): Use ConcurrentHashMap or synchronized access for in-memory thread safety; use Map for id lookup
 @Repository
-public class ColaboradorComissionadoRepository {
+public class ColaboradorComissionadoRepository
+        implements RepositoryInterface<ColaboradorComissionado> {
 
     private final List<ColaboradorComissionado> colaboradores = new ArrayList<>();
 
-    public List<ColaboradorComissionado> buscarTodos() {
+    public ColaboradorComissionadoRepository() {
+        colaboradores.add(ColaboradorComissionado.builder()
+                        .id(1)
+                        .nome("Maria")
+                        .salario(new BigDecimal("12333"))
+                        .tipo(TipoColaborador.COMISSIONADO)
+                        .build());
+    }
+
+    // IMPROVE (local): Search by id, not index; use Map if possible
+    @Override
+    public ColaboradorComissionado getColaboradorById(int id) {
+        return colaboradores.get(id);
+    }
+
+    // IMPROVE (local): Return saved object; avoid getLast if possible
+    @Override
+    public ColaboradorComissionado saveColaborador(
+            ColaboradorComissionado colaborador) {
+
+        colaboradores.add(colaborador);
+        return colaboradores.getLast();
+    }
+
+    @Override
+    public List<ColaboradorComissionado> getAll() {
         return colaboradores;
     }
 
-    public Optional<ColaboradorComissionado> buscarPorId(Long id) {
-        return colaboradores.stream().filter(colaborador -> colaborador.getId().equals(id)).findFirst();
+    // IMPROVE (local): Find by id instead of index
+    @Override
+    public ColaboradorComissionado update(
+            ColaboradorComissionado colaboradorAtualizado) {
+
+        colaboradores.set(
+                colaboradorAtualizado.getId(),
+                colaboradorAtualizado
+        );
+
+        return colaboradores.get(colaboradorAtualizado.getId());
     }
 
-    public ColaboradorComissionado salvar(ColaboradorComissionado colaborador) {
-        colaboradores.add(colaborador);
-        return colaborador;
-    }
-
-    public void remover(ColaboradorComissionado colaborador) {
+    // IMPROVE (local): Search by object properly; ensure equals/hashCode work for in-memory list
+    @Override
+    public void delete(ColaboradorComissionado colaborador) {
         colaboradores.remove(colaborador);
     }
 }

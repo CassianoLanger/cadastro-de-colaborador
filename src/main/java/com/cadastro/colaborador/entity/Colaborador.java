@@ -1,16 +1,25 @@
 package com.cadastro.colaborador.entity;
 
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Data
-@Builder
+@SuperBuilder
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class Colaborador {
     private int id;
+    @NotBlank
     private String nome;
-    private double salario;
+    @Positive
+    private BigDecimal salario;
     private TipoColaborador tipo;
 }
