@@ -2,33 +2,48 @@ package com.cadastro.colaborador.repository;
 
 import com.cadastro.colaborador.entity.ColaboradorComissionado;
 import com.cadastro.colaborador.entity.TipoColaborador;
+import com.cadastro.colaborador.mapper.ColaboradorComissionadoMapper;
+import com.cadastro.colaborador.request.ColaboradorComissionadoRequest;
+import com.cadastro.colaborador.service.ServiceUtils;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class ColaboradorComissionadoRepository
-        implements RepositoryInterface<ColaboradorComissionado> {
+public class ColaboradorComissionadoRepository implements RepositoryInterface<ColaboradorComissionado> {
 
-    private final Map<Integer, ColaboradorComissionado> colaboradores = new HashMap<>();
+    private Map<Integer, ColaboradorComissionado> colaboradores = new ConcurrentHashMap<>();
 
-    public ColaboradorComissionadoRepository() {
+    private final ServiceUtils serviceUtils;
+
+    public ColaboradorComissionadoRepository(ServiceUtils serviceUtils) {
+        this.serviceUtils = serviceUtils;
         mockColaboradores();
     }
 
     @Override
-    public ColaboradorComissionado getColaboradorById(int id) {
+    public ColaboradorComissionado getById(int id) {
         return colaboradores.get(id);
     }
 
     @Override
-    public ColaboradorComissionado saveColaborador(
-            ColaboradorComissionado colaborador) {
+    public ColaboradorComissionado save(ColaboradorComissionado colaborador) {
+        int id = serviceUtils.newId(getAll());
+        colaboradores.put(id, colaborador);
+        return colaboradores.get(id);
+    }
 
-        colaboradores.put(colaborador.getId(), colaborador);
-        return colaboradores.get(colaborador.getId());
+    public ColaboradorComissionado saveColaborador(ColaboradorComissionadoRequest colaborador) {
+        int id = serviceUtils.newId(getAll());
+        colaboradores.put(id, ColaboradorComissionadoMapper.toEntity(colaborador));
+
+        return colaboradores.values()
+                .stream()
+                .max(Comparator.comparing(ColaboradorComissionado::getId))
+                .orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -38,24 +53,23 @@ public class ColaboradorComissionadoRepository
 
     @Override
     public ColaboradorComissionado update(ColaboradorComissionado colaboradorAtualizado) {
-
         colaboradores.put(colaboradorAtualizado.getId(), colaboradorAtualizado);
-
-        return colaboradores.get(colaboradorAtualizado.getId());
+        return colaboradorAtualizado;
     }
 
-    // IMPROVE (local): Search by object properly; ensure equals/hashCode work for in-memory list
     @Override
-    public void delete(ColaboradorComissionado colaborador) {
-        colaboradores.remove(colaborador.getId());
+    public void delete(int id) {
+        colaboradores.remove(id);
     }
 
-    void mockColaboradores(){
+    void mockColaboradores() {
         colaboradores.put(1, ColaboradorComissionado.builder()
                 .id(1)
                 .nome("Maria")
                 .salario(new BigDecimal("12333"))
                 .tipo(TipoColaborador.COMISSIONADO)
+                .valorDasVendas(5000)
+                .percentualDeComissao(10)
                 .build());
     }
 }
