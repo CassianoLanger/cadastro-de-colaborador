@@ -2,33 +2,48 @@ package com.cadastro.colaborador.repository;
 
 import com.cadastro.colaborador.entity.ColaboradorProducao;
 import com.cadastro.colaborador.entity.TipoColaborador;
+import com.cadastro.colaborador.mapper.ColaboradorProducaoMapper;
+import com.cadastro.colaborador.request.ColaboradorProducaoRequest;
+import com.cadastro.colaborador.service.ServiceUtils;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-// IMPROVE (local only): Use ConcurrentHashMap or synchronized access for in-memory thread safety; use Map for id lookup
 @Repository
 public class ColaboradorProducaoRepository implements RepositoryInterface<ColaboradorProducao> {
 
-    private final Map<Integer, ColaboradorProducao> colaboradores = new HashMap<>();
+    private Map<Integer, ColaboradorProducao> colaboradores = new ConcurrentHashMap<>();
 
-    public ColaboradorProducaoRepository() {
+    private final ServiceUtils serviceUtils;
+
+    public ColaboradorProducaoRepository(ServiceUtils serviceUtils) {
+        this.serviceUtils = serviceUtils;
         mockColaborador();
     }
 
-    // IMPROVE (local): Search by id, not index
     @Override
-    public ColaboradorProducao getColaboradorById(int id) {
+    public ColaboradorProducao getById(int id) {
         return colaboradores.get(id);
     }
 
-    // IMPROVE (local): Check for duplicates; generate id locally
     @Override
-    public ColaboradorProducao saveColaborador(ColaboradorProducao colaborador) {
-        colaboradores.put(colaborador.getId(), colaborador);
-        return colaborador;
+    public ColaboradorProducao save(ColaboradorProducao colaborador) {
+        int id = serviceUtils.newId(getAll());
+        colaboradores.put(id, colaborador);
+        return colaboradores.get(id);
+    }
+
+    public ColaboradorProducao saveColaborador(ColaboradorProducaoRequest colaborador) {
+        int id = serviceUtils.newId(getAll());
+        colaboradores.put(id, ColaboradorProducaoMapper.toEntity(colaborador));
+
+        return colaboradores.values()
+                .stream()
+                .max(Comparator.comparing(ColaboradorProducao::getId))
+                .orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -36,33 +51,25 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
         return colaboradores;
     }
 
-    // IMPROVE (local): Find by id instead of index
     @Override
-    public ColaboradorProducao update(
-            ColaboradorProducao colaboradorAtualizado) {
-
-        colaboradores.put(
-                colaboradorAtualizado.getId(),
-                colaboradorAtualizado
-        );
-
+    public ColaboradorProducao update(ColaboradorProducao colaboradorAtualizado) {
+        colaboradores.put(colaboradorAtualizado.getId(), colaboradorAtualizado);
         return colaboradorAtualizado;
     }
 
-    // IMPROVE (local): Search by object properly; ensure equals/hashCode work
     @Override
-    public void delete(ColaboradorProducao colaborador) {
-        colaboradores.remove(colaborador.getId());
+    public void delete(int id) {
+        colaboradores.remove(id);
     }
-
-    void mockColaborador(){
+    // REV: mock pode gerar conflito de id com saveColaborador; avaliar seed inicial
+    void mockColaborador() {
         colaboradores.put(1, ColaboradorProducao.builder()
-                .id(0)
+                .id(1)
                 .nome("Carlos")
                 .salario(new BigDecimal("4200"))
                 .tipo(TipoColaborador.PRODUCAO)
-                .quantidadeProduzida(100)
-                .valorPagoPorUnidade(42)
+                .quantidadeProduzida(new BigDecimal("100"))
+                .valorPagoPorUnidade(new BigDecimal("42"))
                 .build());
     }
 }
