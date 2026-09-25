@@ -2,32 +2,51 @@ package com.cadastro.colaborador.repository;
 
 import com.cadastro.colaborador.entity.Colaborador;
 import com.cadastro.colaborador.entity.TipoColaborador;
+import com.cadastro.colaborador.mapper.ColaboradorMapper;
+import com.cadastro.colaborador.request.ColaboradorRequest;
+import com.cadastro.colaborador.service.ServiceUtils;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// IMPROVE (local only): Use ConcurrentHashMap or synchronized access for in-memory thread safety
-// IMPROVE (local only): Search by id instead of using index directly; consider Map<id, Object>
 @Repository
 public class ColaboradorRepository implements RepositoryInterface<Colaborador> {
 
-    private final Map<Integer,Colaborador> colaboradores = new ConcurrentHashMap<>();
+    private Map<Integer,Colaborador> colaboradores = new ConcurrentHashMap<>();
 
-    public ColaboradorRepository() {
+    private final ServiceUtils serviceUtils;
+
+    public ColaboradorRepository(ServiceUtils serviceUtils) {
+        this.serviceUtils = serviceUtils;
         mockColaboradores();
     }
+
     @Override
-    public Colaborador getColaboradorById(int id) {
+    public Colaborador getById(int id) {
+        return colaboradores.get(id);
+    }
+
+    @Override
+    public Colaborador save(Colaborador colaborador) {
+        int id = serviceUtils.newId(getAll());
+        colaboradores.put(id, colaborador);
+
         return colaboradores.get(id);
     }
 
     // IMPROVE (local): Check for duplicates; generate id locally (AtomicInteger/max+1)
-    @Override
-    public Colaborador saveColaborador(Colaborador colaborador) {
-        colaboradores.put(colaborador.getId(), colaborador);
-        return colaborador;
+    public Colaborador saveColaborador(ColaboradorRequest colaborador) {
+        int id = serviceUtils.newId(getAll());
+
+        colaboradores.put(id, ColaboradorMapper.toEntity(colaborador));
+
+        return colaboradores.values()
+                .stream()
+                .max(Comparator.comparing(Colaborador::getId))
+                .orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -36,19 +55,18 @@ public class ColaboradorRepository implements RepositoryInterface<Colaborador> {
     }
 
     @Override
-    public Colaborador update(Colaborador colaboradorAtualizado) {
+    public Colaborador update(Colaborador colaboradorAtualizado){
         colaboradores.put(colaboradorAtualizado.getId(), colaboradorAtualizado);
         return colaboradorAtualizado;
     }
 
-    // IMPROVE: Search by id/object properly; do not rely solely on equals
     @Override
-    public void delete(Colaborador colaborador) {
-        colaboradores.remove(colaborador.getId());
+    public void delete(int id){
+        colaboradores.remove(id);
     }
 
 
-    void mockColaboradores(){
+    void mockColaboradores() {
         colaboradores.put(1, new Colaborador(1, "João", new BigDecimal("2780"), TipoColaborador.PADRAO));
     }
 }

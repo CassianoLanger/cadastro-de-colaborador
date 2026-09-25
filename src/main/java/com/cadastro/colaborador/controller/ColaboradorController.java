@@ -1,6 +1,7 @@
 package com.cadastro.colaborador.controller;
 
-import com.cadastro.colaborador.entity.Colaborador;
+import com.cadastro.colaborador.request.ColaboradorRequest;
+import com.cadastro.colaborador.response.ColaboradorResponse;
 import com.cadastro.colaborador.service.ColaboradorService;
 import com.cadastro.colaborador.swagger.SwaggerColaborador;
 import jakarta.validation.Valid;
@@ -12,30 +13,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/colaborador")
 @RequiredArgsConstructor
-public class ColaboradorController implements SwaggerColaborador<Colaborador> {
+public class ColaboradorController implements SwaggerColaborador {
 
     private final ColaboradorService colaboradorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Colaborador> getColaborador(@PathVariable("id") int id){
+    public ResponseEntity<ColaboradorResponse> getColaborador(@PathVariable("id") int id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
     @PostMapping
-    public ResponseEntity<Colaborador> postColaborador(@RequestBody @Valid Colaborador colaborador){
+    public ResponseEntity<ColaboradorResponse> postColaborador(@RequestBody @Valid ColaboradorRequest colaborador){
         return ResponseEntity.status(HttpStatus.CREATED).body(colaboradorService.saveColaborador(colaborador));
     }
 
-    // IMPROVE: Use @PathVariable explicitly and validate id consistency
     @PutMapping("/{id}")
-    public ResponseEntity<Colaborador> putColaborador(@RequestBody @Valid Colaborador colaborador,
-                                                      @PathVariable int id){
+    public ResponseEntity<ColaboradorResponse> putColaborador(@RequestBody @Valid ColaboradorRequest colaborador,
+                                                              @PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
-    // IMPROVE: Delete should use @PathVariable id instead of @RequestBody, and return 204 No Content
-    @DeleteMapping
-    public void deleteColaborador(@RequestBody @Valid Colaborador colaborador){
-        colaboradorService.deleteColaborador(colaborador);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteColaborador(@PathVariable int id){
+        colaboradorService.deleteColaborador(id);
     }
 }
