@@ -3,13 +3,14 @@ package com.cadastro.colaborador.controller;
 import com.cadastro.colaborador.request.ColaboradorComissionadoRequest;
 import com.cadastro.colaborador.response.ColaboradorComissionadoResponse;
 import com.cadastro.colaborador.service.ColaboradorComissionadoService;
+import com.cadastro.colaborador.swagger.SwaggerColaboradorComissionado;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.cadastro.colaborador.swagger.SwaggerColaboradorComissionado;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/colaborador/comissionado")
@@ -30,7 +31,7 @@ public class ColaboradorComissionadoController implements SwaggerColaboradorComi
 
     @PutMapping("/{id}")
     public ResponseEntity<ColaboradorComissionadoResponse> putColaborador(@RequestBody @Valid ColaboradorComissionadoRequest colaborador,
-                                                              @PathVariable int id) {
+                                                                          @PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
@@ -38,5 +39,10 @@ public class ColaboradorComissionadoController implements SwaggerColaboradorComi
     @DeleteMapping("/{id}")
     public void deleteColaborador(@PathVariable int id) {
         colaboradorService.deleteColaborador(id);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Map<Integer, ColaboradorComissionadoResponse>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
     }
 }

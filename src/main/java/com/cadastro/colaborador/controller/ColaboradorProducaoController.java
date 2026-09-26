@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/v1/colaborador/producao")
@@ -30,7 +32,7 @@ public class ColaboradorProducaoController implements SwaggerColaboradorProducao
 
     @PutMapping("/{id}")
     public ResponseEntity<ColaboradorProducaoResponse> putColaborador(@RequestBody @Valid ColaboradorProducaoRequest colaborador,
-                                                      @PathVariable int id){
+                                                                      @PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
@@ -38,5 +40,10 @@ public class ColaboradorProducaoController implements SwaggerColaboradorProducao
     @DeleteMapping("/{id}")
     public void deleteColaborador(@PathVariable int id){
         colaboradorService.deleteColaborador(id);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Map<Integer, ColaboradorProducaoResponse>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
     }
 }

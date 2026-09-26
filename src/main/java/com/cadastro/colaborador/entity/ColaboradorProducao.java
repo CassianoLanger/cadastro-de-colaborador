@@ -16,5 +16,5 @@ public class ColaboradorProducao extends Colaborador{
     @Positive
     private BigDecimal quantidadeProduzida;
     @Positive
-    private BigDecimal valorPagoPorUnidade;
+    private BigDecimal valorUnidade;
 }

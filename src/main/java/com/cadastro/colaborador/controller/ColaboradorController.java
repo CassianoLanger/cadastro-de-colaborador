@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/v1/colaborador")
 @RequiredArgsConstructor
@@ -38,4 +40,11 @@ public class ColaboradorController implements SwaggerColaborador {
     public void deleteColaborador(@PathVariable int id){
         colaboradorService.deleteColaborador(id);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<Map<Integer, ColaboradorResponse>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
+    }
+
+
 }

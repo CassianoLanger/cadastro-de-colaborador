@@ -15,7 +15,7 @@ public class ColaboradorProducaoMapper {
                 .salario(entity.getSalario())
                 .tipo(entity.getTipo())
                 .quantidadeProduzida(entity.getQuantidadeProduzida())
-                .valorPagoPorUnidade(entity.getValorPagoPorUnidade())
+                .valorPagoPorUnidade(entity.getValorUnidade())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class ColaboradorProducaoMapper {
                 .nome(request.nome())
                 .salario(request.salario())
                 .quantidadeProduzida(request.quantidadeProduzida())
-                .valorPagoPorUnidade(request.valorPagoPorUnidade())
+                .valorUnidade(request.valorPagoPorUnidade())
                 .build();
     }
 }

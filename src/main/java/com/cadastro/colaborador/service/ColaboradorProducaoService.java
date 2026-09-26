@@ -54,7 +54,7 @@ public class ColaboradorProducaoService {
                 .nome(request.nome())
                 .salario(request.salario())
                 .quantidadeProduzida(request.quantidadeProduzida())
-                .valorPagoPorUnidade(request.valorPagoPorUnidade())
+                .valorUnidade(request.valorPagoPorUnidade())
                 .tipo(TipoColaborador.PRODUCAO)
                 .build();
 

@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class ColaboradorComissionado extends Colaborador{
     private double valorDasVendas;
     @Positive
     private double percentualDeComissao;
+    private BigDecimal comissao;
 }

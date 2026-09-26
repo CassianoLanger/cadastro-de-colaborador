@@ -69,7 +69,7 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
                 .salario(new BigDecimal("4200"))
                 .tipo(TipoColaborador.PRODUCAO)
                 .quantidadeProduzida(new BigDecimal("100"))
-                .valorPagoPorUnidade(new BigDecimal("42"))
+                .valorUnidade(new BigDecimal("42"))
                 .build());
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Map;
+
 @Tag(name = "Colaborador", description = "Operações de CRUD de colaboradores")
 public interface SwaggerColaborador{
 
@@ -56,4 +58,13 @@ public interface SwaggerColaborador{
     void deleteColaborador(
             @Parameter(description = "ID do colaborador a ser removido", example = "1", required = true)
             @PathVariable("id") int id);
+
+
+    @Operation(summary = "Busca todos os colaboradores",
+            description = "Busca todos os colaboradores disponiveis")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Colaboradores encontrados"),
+            @ApiResponse(responseCode = "404", description = "Colaboradores não encontrados")
+    })
+    ResponseEntity<Map<Integer, ColaboradorResponse>> getAll();
 }
