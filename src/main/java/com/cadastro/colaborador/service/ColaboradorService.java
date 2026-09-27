@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.cadastro.colaborador.exception.NotFoundException;
 import static java.util.Objects.isNull;
 
 @Service
@@ -19,17 +20,20 @@ import static java.util.Objects.isNull;
 public class ColaboradorService {
     private final ColaboradorRepository colaboradorRepository;
 
-    // REV: getColaborador pode lançar NPE se id não existir; considerar NotFoundException
     public ColaboradorResponse getColaborador(int id) {
-        return ColaboradorMapper.toResponse(colaboradorRepository.getById(id));
+        Colaborador entity = colaboradorRepository.getById(id);
+        if (isNull(entity)) {
+            throw new NotFoundException("Colaborador não encontrado para id: " + id);
+        }
+        return ColaboradorMapper.toResponse(entity);
     }
 
-    // REV: saveColaborador não valida request (ex: nome vazio); considerar @Valid no controller
     public ColaboradorResponse saveColaborador(ColaboradorRequest colaborador) {
-        return ColaboradorMapper.toResponse(colaboradorRepository.saveColaborador(colaborador));
+        Colaborador entity = ColaboradorMapper.toEntity(colaborador);
+        entity.setTipo(TipoColaborador.PADRAO);
+        return ColaboradorMapper.toResponse(colaboradorRepository.save(entity));
     }
 
-    // REV: getAll() carrega tudo em memória; considerar paginação para grandes volumes
     public Map<Integer, ColaboradorResponse> getAll(){
         return colaboradorRepository.getAll().entrySet().stream()
                 .collect(Collectors.toMap(
@@ -38,23 +42,17 @@ public class ColaboradorService {
                 ));
     }
 
-    // REV: updateColaborador usa NullPointerException; ideal seria exceção personalizada (NotFoundException)
-    // REV: mapeia request para entidade (colaboradorAtual) mas não usa o objeto mapeado diretamente (só verifica null)
     public ColaboradorResponse updateColaborador(ColaboradorRequest request, int id) {
-
-        ColaboradorResponse colaborador = getColaborador(id);
-        Colaborador colaboradorAtual =  ColaboradorMapper.toEntity(request);
-
-        if(isNull(colaboradorAtual) || isNull(colaborador)){
-            throw new NullPointerException("Colaborador não encontrado");
+        Colaborador existente = colaboradorRepository.getById(id);
+        if (isNull(existente)) {
+            throw new NotFoundException("Colaborador não encontrado para id: " + id);
         }
 
-        // REV: tipo é forçado a PADRAO; se o request tiver tipo, deveria ser preservado
         Colaborador colaboradorAtualizado = Colaborador.builder()
                 .id(id)
                 .nome(request.nome())
                 .salario(request.salario())
-                .tipo(TipoColaborador.PADRAO)
+                .tipo(existente.getTipo())
                 .build();
 
         return ColaboradorMapper.toResponse(colaboradorRepository.update(colaboradorAtualizado));

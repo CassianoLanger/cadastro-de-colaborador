@@ -32,6 +32,7 @@ public class ColaboradorComissionadoRepository implements RepositoryInterface<Co
     @Override
     public ColaboradorComissionado save(ColaboradorComissionado colaborador) {
         int id = serviceUtils.newId(getAll());
+        colaborador.setId(id);
         colaboradores.put(id, colaborador);
         return colaboradores.get(id);
     }

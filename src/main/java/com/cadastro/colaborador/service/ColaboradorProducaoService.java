@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.cadastro.colaborador.exception.NotFoundException;
 import static java.util.Objects.isNull;
 
 @Service
@@ -20,17 +21,20 @@ public class ColaboradorProducaoService {
 
     private final ColaboradorProducaoRepository colaboradorRepository;
 
-    // REV: getColaborador pode falhar com NPE se id inexistente; considerar tratamento
     public ColaboradorProducaoResponse getColaborador(int id) {
-        return ColaboradorProducaoMapper.toResponse(colaboradorRepository.getById(id));
+        ColaboradorProducao entity = colaboradorRepository.getById(id);
+        if (isNull(entity)) {
+            throw new NotFoundException("Colaborador produção não encontrado para id: " + id);
+        }
+        return ColaboradorProducaoMapper.toResponse(entity);
     }
 
-    // REV: saveColaborador não valida campos obrigatórios do request; adicionar validação
     public ColaboradorProducaoResponse saveColaborador(ColaboradorProducaoRequest colaborador) {
-        return ColaboradorProducaoMapper.toResponse(colaboradorRepository.saveColaborador(colaborador));
+        ColaboradorProducao entity = ColaboradorProducaoMapper.toEntity(colaborador);
+        entity.setTipo(TipoColaborador.PRODUCAO);
+        return ColaboradorProducaoMapper.toResponse(colaboradorRepository.save(entity));
     }
 
-    // REV: getAll carrega toda dataset em memória; avaliar paginacao
     public Map<Integer, ColaboradorProducaoResponse> getAll() {
         return colaboradorRepository.getAll().entrySet().stream()
                 .collect(Collectors.toMap(
@@ -39,14 +43,10 @@ public class ColaboradorProducaoService {
                 ));
     }
 
-    // REV: updateColaborador usa NullPointerException; ideal NotFoundException
-    // REV: tipo é forçado a PRODUCAO; se necessário preservar outro tipo, ajustar
     public ColaboradorProducaoResponse updateColaborador(ColaboradorProducaoRequest request, int id) {
-        ColaboradorProducaoResponse colaborador = getColaborador(id);
-        ColaboradorProducao colaboradorAtual = ColaboradorProducaoMapper.toEntity(request);
-
-        if (isNull(colaboradorAtual) || isNull(colaborador)) {
-            throw new NullPointerException("Colaborador não encontrado");
+        ColaboradorProducao existente = colaboradorRepository.getById(id);
+        if (isNull(existente)) {
+            throw new NotFoundException("Colaborador produção não encontrado para id: " + id);
         }
 
         ColaboradorProducao colaboradorAtualizado = ColaboradorProducao.builder()
@@ -55,7 +55,7 @@ public class ColaboradorProducaoService {
                 .salario(request.salario())
                 .quantidadeProduzida(request.quantidadeProduzida())
                 .valorUnidade(request.valorPagoPorUnidade())
-                .tipo(TipoColaborador.PRODUCAO)
+                .tipo(existente.getTipo())
                 .build();
 
         return ColaboradorProducaoMapper.toResponse(colaboradorRepository.update(colaboradorAtualizado));

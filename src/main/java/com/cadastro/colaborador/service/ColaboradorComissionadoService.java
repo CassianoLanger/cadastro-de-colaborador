@@ -9,9 +9,11 @@ import com.cadastro.colaborador.response.ColaboradorComissionadoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.cadastro.colaborador.exception.NotFoundException;
 import static java.util.Objects.isNull;
 
 @Service
@@ -20,14 +22,20 @@ public class ColaboradorComissionadoService {
 
     private final ColaboradorComissionadoRepository colaboradorRepository;
 
-    // REV: getColaborador pode falhar com NPE; considerar exceção customizada
     public ColaboradorComissionadoResponse getColaborador(int id) {
-        return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.getById(id));
+        ColaboradorComissionado entity = colaboradorRepository.getById(id);
+        if (isNull(entity)) {
+            throw new NotFoundException("Colaborador comissionado não encontrado para id: " + id);
+        }
+        return ColaboradorComissionadoMapper.toResponse(entity);
     }
 
-    // REV: saveColaborador não valida request; adicionar @Valid e checagens
     public ColaboradorComissionadoResponse saveColaborador(ColaboradorComissionadoRequest colaborador) {
-        return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.saveColaborador(colaborador));
+        ColaboradorComissionado entity = ColaboradorComissionadoMapper.toEntity(colaborador);
+        BigDecimal comissao = BigDecimal.valueOf(entity.getValorDasVendas() * entity.getPercentualDeComissao() / 100.0);
+        entity.setTipo(TipoColaborador.COMISSIONADO);
+        entity.setComissao(comissao);
+        return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.save(entity));
     }
 
     public Map<Integer, ColaboradorComissionadoResponse> getAll() {
@@ -39,12 +47,12 @@ public class ColaboradorComissionadoService {
     }
 
     public ColaboradorComissionadoResponse updateColaborador(ColaboradorComissionadoRequest request, int id) {
-        ColaboradorComissionadoResponse colaborador = getColaborador(id);
-        ColaboradorComissionado colaboradorAtual = ColaboradorComissionadoMapper.toEntity(request);
-
-        if (isNull(colaboradorAtual) || isNull(colaborador)) {
-            throw new NullPointerException("Colaborador não encontrado");
+        ColaboradorComissionado existente = colaboradorRepository.getById(id);
+        if (isNull(existente)) {
+            throw new NotFoundException("Colaborador comissionado não encontrado para id: " + id);
         }
+
+        BigDecimal comissao = BigDecimal.valueOf(request.valorDasVendas() * request.percentualDeComissao() / 100.0);
 
         ColaboradorComissionado colaboradorAtualizado = ColaboradorComissionado.builder()
                 .id(id)
@@ -52,7 +60,8 @@ public class ColaboradorComissionadoService {
                 .salario(request.salario())
                 .valorDasVendas(request.valorDasVendas())
                 .percentualDeComissao(request.percentualDeComissao())
-                .tipo(TipoColaborador.COMISSIONADO)
+                .tipo(existente.getTipo())
+                .comissao(comissao)
                 .build();
 
         return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.update(colaboradorAtualizado));

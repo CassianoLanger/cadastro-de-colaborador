@@ -32,12 +32,12 @@ public class ColaboradorRepository implements RepositoryInterface<Colaborador> {
     @Override
     public Colaborador save(Colaborador colaborador) {
         int id = serviceUtils.newId(getAll());
+        colaborador.setId(id);
         colaboradores.put(id, colaborador);
 
         return colaboradores.get(id);
     }
 
-    // IMPROVE (local): Check for duplicates; generate id locally (AtomicInteger/max+1)
     public Colaborador saveColaborador(ColaboradorRequest colaborador) {
         int id = serviceUtils.newId(getAll());
 

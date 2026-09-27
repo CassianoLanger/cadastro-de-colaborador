@@ -32,6 +32,7 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
     @Override
     public ColaboradorProducao save(ColaboradorProducao colaborador) {
         int id = serviceUtils.newId(getAll());
+        colaborador.setId(id);
         colaboradores.put(id, colaborador);
         return colaboradores.get(id);
     }
@@ -61,7 +62,6 @@ public class ColaboradorProducaoRepository implements RepositoryInterface<Colabo
     public void delete(int id) {
         colaboradores.remove(id);
     }
-    // REV: mock pode gerar conflito de id com saveColaborador; avaliar seed inicial
     void mockColaborador() {
         colaboradores.put(1, ColaboradorProducao.builder()
                 .id(1)

@@ -16,6 +16,7 @@ public class ColaboradorComissionadoMapper {
                 .tipo(entity.getTipo())
                 .valorDasVendas(entity.getValorDasVendas())
                 .percentualDeComissao(entity.getPercentualDeComissao())
+                .comissao(entity.getComissao())
                 .build();
     }
 
