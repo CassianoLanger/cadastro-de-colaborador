@@ -1,9 +1,9 @@
-package com.cadastro.colaborador.controller;
+package com.cadastro.colaborador.controller.colaboradores;
 
-import com.cadastro.colaborador.request.ColaboradorComissionadoRequest;
-import com.cadastro.colaborador.response.ColaboradorComissionadoResponse;
-import com.cadastro.colaborador.service.ColaboradorComissionadoService;
-import com.cadastro.colaborador.swagger.SwaggerColaboradorComissionado;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorComissionadoRequest;
+import com.cadastro.colaborador.response.colaboradores.ColaboradorComissionadoResponse;
+import com.cadastro.colaborador.service.colaboradores.ColaboradorComissionadoService;
+import com.cadastro.colaborador.swagger.colaboradores.SwaggerColaboradorComissionado;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

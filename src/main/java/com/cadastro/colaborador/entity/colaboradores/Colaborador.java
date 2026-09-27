@@ -1,4 +1,4 @@
-package com.cadastro.colaborador.entity;
+package com.cadastro.colaborador.entity.colaboradores;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -16,9 +16,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Colaborador {
+
     private int id;
+
+    @NotBlank
+    private String matricula;
+
     @NotBlank
     private String nome;
+
     @Positive
     private BigDecimal salario;
     private TipoColaborador tipo;

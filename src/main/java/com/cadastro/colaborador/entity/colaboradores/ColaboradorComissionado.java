@@ -1,4 +1,4 @@
-package com.cadastro.colaborador.entity;
+package com.cadastro.colaborador.entity.colaboradores;
 
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ColaboradorComissionado extends Colaborador{
+public class ColaboradorComissionado extends Colaborador {
     @Positive
     private double valorDasVendas;
     @Positive

@@ -1,11 +1,11 @@
-package com.cadastro.colaborador.service;
+package com.cadastro.colaborador.service.colaboradores;
 
-import com.cadastro.colaborador.entity.ColaboradorProducao;
-import com.cadastro.colaborador.entity.TipoColaborador;
-import com.cadastro.colaborador.mapper.ColaboradorProducaoMapper;
-import com.cadastro.colaborador.repository.ColaboradorProducaoRepository;
-import com.cadastro.colaborador.request.ColaboradorProducaoRequest;
-import com.cadastro.colaborador.response.ColaboradorProducaoResponse;
+import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
+import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.mapper.colaboradores.ColaboradorProducaoMapper;
+import com.cadastro.colaborador.repository.colaboradores.ColaboradorProducaoRepository;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorProducaoRequest;
+import com.cadastro.colaborador.response.colaboradores.ColaboradorProducaoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

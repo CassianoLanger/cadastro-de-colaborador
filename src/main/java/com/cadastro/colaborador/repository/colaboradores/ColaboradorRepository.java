@@ -1,9 +1,10 @@
-package com.cadastro.colaborador.repository;
+package com.cadastro.colaborador.repository.colaboradores;
 
-import com.cadastro.colaborador.entity.Colaborador;
-import com.cadastro.colaborador.entity.TipoColaborador;
-import com.cadastro.colaborador.mapper.ColaboradorMapper;
-import com.cadastro.colaborador.request.ColaboradorRequest;
+import com.cadastro.colaborador.entity.colaboradores.Colaborador;
+import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.mapper.colaboradores.ColaboradorMapper;
+import com.cadastro.colaborador.repository.RepositoryInterface;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
 import com.cadastro.colaborador.service.ServiceUtils;
 import org.springframework.stereotype.Repository;
 
@@ -67,6 +68,6 @@ public class ColaboradorRepository implements RepositoryInterface<Colaborador> {
 
 
     void mockColaboradores() {
-        colaboradores.put(1, new Colaborador(1, "João", new BigDecimal("2780"), TipoColaborador.PADRAO));
+        colaboradores.put(1, new Colaborador(1,"JM1", "João Moraes", new BigDecimal("2780"), TipoColaborador.PADRAO));
     }
 }

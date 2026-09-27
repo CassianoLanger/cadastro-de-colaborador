@@ -1,8 +1,8 @@
-package com.cadastro.colaborador.mapper;
+package com.cadastro.colaborador.mapper.colaboradores;
 
-import com.cadastro.colaborador.entity.Colaborador;
-import com.cadastro.colaborador.request.ColaboradorRequest;
-import com.cadastro.colaborador.response.ColaboradorResponse;
+import com.cadastro.colaborador.entity.colaboradores.Colaborador;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
+import com.cadastro.colaborador.response.colaboradores.ColaboradorResponse;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -10,7 +10,7 @@ public class ColaboradorMapper {
     
     public ColaboradorResponse toResponse(Colaborador entity){
         return ColaboradorResponse.builder()
-                .id(entity.getId())
+                .matricula(entity.getMatricula())
                 .nome(entity.getNome())
                 .salario(entity.getSalario())
                 .tipo(entity.getTipo())

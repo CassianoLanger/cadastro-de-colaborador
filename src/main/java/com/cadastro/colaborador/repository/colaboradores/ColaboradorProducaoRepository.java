@@ -1,9 +1,10 @@
-package com.cadastro.colaborador.repository;
+package com.cadastro.colaborador.repository.colaboradores;
 
-import com.cadastro.colaborador.entity.ColaboradorProducao;
-import com.cadastro.colaborador.entity.TipoColaborador;
-import com.cadastro.colaborador.mapper.ColaboradorProducaoMapper;
-import com.cadastro.colaborador.request.ColaboradorProducaoRequest;
+import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
+import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.mapper.colaboradores.ColaboradorProducaoMapper;
+import com.cadastro.colaborador.repository.RepositoryInterface;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorProducaoRequest;
 import com.cadastro.colaborador.service.ServiceUtils;
 import org.springframework.stereotype.Repository;
 

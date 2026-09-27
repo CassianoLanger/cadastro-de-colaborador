@@ -1,4 +1,4 @@
-package com.cadastro.colaborador.request;
+package com.cadastro.colaborador.request.colaboradores;
 
 import java.math.BigDecimal;
 

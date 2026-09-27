@@ -1,4 +1,4 @@
-package com.cadastro.colaborador.entity;
+package com.cadastro.colaborador.entity.colaboradores;
 
 public enum TipoColaborador {
     PADRAO,

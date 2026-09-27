@@ -1,7 +1,7 @@
-package com.cadastro.colaborador.swagger;
+package com.cadastro.colaborador.swagger.colaboradores;
 
-import com.cadastro.colaborador.request.ColaboradorRequest;
-import com.cadastro.colaborador.response.ColaboradorResponse;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
+import com.cadastro.colaborador.response.colaboradores.ColaboradorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,11 +1,13 @@
-package com.cadastro.colaborador.service;
+package com.cadastro.colaborador.service.colaboradores;
 
-import com.cadastro.colaborador.entity.Colaborador;
-import com.cadastro.colaborador.entity.TipoColaborador;
-import com.cadastro.colaborador.mapper.ColaboradorMapper;
-import com.cadastro.colaborador.repository.ColaboradorRepository;
-import com.cadastro.colaborador.request.ColaboradorRequest;
-import com.cadastro.colaborador.response.ColaboradorResponse;
+import com.cadastro.colaborador.entity.colaboradores.Colaborador;
+import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.mapper.colaboradores.ColaboradorMapper;
+import com.cadastro.colaborador.repository.colaboradores.ColaboradorRepository;
+import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
+import com.cadastro.colaborador.request.colaboradores.FolhaDePagamentoRequest;
+import com.cadastro.colaborador.response.colaboradores.ColaboradorResponse;
+import com.cadastro.colaborador.service.paycheck.FolhaDePagamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class ColaboradorService {
     private final ColaboradorRepository colaboradorRepository;
+    private final FolhaDePagamentoService folhaDePagamentoService;
 
     public ColaboradorResponse getColaborador(int id) {
         Colaborador entity = colaboradorRepository.getById(id);
@@ -31,6 +34,7 @@ public class ColaboradorService {
     public ColaboradorResponse saveColaborador(ColaboradorRequest colaborador) {
         Colaborador entity = ColaboradorMapper.toEntity(colaborador);
         entity.setTipo(TipoColaborador.PADRAO);
+        folhaDePagamentoService.salvarFolha(new FolhaDePagamentoRequest(1, colaborador.matricula(), colaborador.salario()));
         return ColaboradorMapper.toResponse(colaboradorRepository.save(entity));
     }
 
