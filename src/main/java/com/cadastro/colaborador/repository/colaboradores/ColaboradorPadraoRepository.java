@@ -57,6 +57,7 @@ public class ColaboradorPadraoRepository implements RepositoryInterface<Colabora
         ColaboradorPadrao colaboradorPadrao = ColaboradorPadrao.builder()
                 .id(1)
                 .matricula("JM1")
+                .nome("Joao Moraes")
                 .salario(new BigDecimal("2700"))
                 .tipo(TipoColaborador.PADRAO)
                 .build();
