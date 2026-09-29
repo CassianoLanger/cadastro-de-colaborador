@@ -2,7 +2,7 @@ package com.cadastro.colaborador.controller.colaboradores;
 
 import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
 import com.cadastro.colaborador.response.colaboradores.ColaboradorResponse;
-import com.cadastro.colaborador.service.colaboradores.ColaboradorService;
+import com.cadastro.colaborador.service.colaboradores.ColaboradorPadraoService;
 import com.cadastro.colaborador.swagger.colaboradores.SwaggerColaborador;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/colaborador")
 @RequiredArgsConstructor
-public class ColaboradorController implements SwaggerColaborador {
+public class ColaboradorPadraoController implements SwaggerColaborador {
 
-    private final ColaboradorService colaboradorService;
+    private final ColaboradorPadraoService colaboradorService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ColaboradorResponse> getColaborador(@PathVariable("id") int id){

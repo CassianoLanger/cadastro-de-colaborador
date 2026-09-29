@@ -1,11 +1,12 @@
 package com.cadastro.colaborador.service.colaboradores;
 
+import com.cadastro.colaborador.entity.colaboradores.ColaboradorPadrao;
 import com.cadastro.colaborador.entity.colaboradores.Colaborador;
 import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
 import com.cadastro.colaborador.mapper.colaboradores.ColaboradorMapper;
-import com.cadastro.colaborador.repository.colaboradores.ColaboradorRepository;
+import com.cadastro.colaborador.repository.colaboradores.ColaboradorPadraoRepository;
 import com.cadastro.colaborador.request.colaboradores.ColaboradorRequest;
-import com.cadastro.colaborador.request.colaboradores.FolhaDePagamentoRequest;
+import com.cadastro.colaborador.request.paycheck.FolhaDePagamentoRequest;
 import com.cadastro.colaborador.response.colaboradores.ColaboradorResponse;
 import com.cadastro.colaborador.service.paycheck.FolhaDePagamentoService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,12 @@ import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class ColaboradorService {
-    private final ColaboradorRepository colaboradorRepository;
+public class ColaboradorPadraoService {
+    private final ColaboradorPadraoRepository colaboradorRepository;
     private final FolhaDePagamentoService folhaDePagamentoService;
 
     public ColaboradorResponse getColaborador(int id) {
-        Colaborador entity = colaboradorRepository.getById(id);
+        ColaboradorPadrao entity = colaboradorRepository.getById(id);
         if (isNull(entity)) {
             throw new NotFoundException("Colaborador não encontrado para id: " + id);
         }
@@ -32,7 +33,7 @@ public class ColaboradorService {
     }
 
     public ColaboradorResponse saveColaborador(ColaboradorRequest colaborador) {
-        Colaborador entity = ColaboradorMapper.toEntity(colaborador);
+        ColaboradorPadrao entity = ColaboradorMapper.toEntity(colaborador);
         entity.setTipo(TipoColaborador.PADRAO);
         folhaDePagamentoService.salvarFolha(new FolhaDePagamentoRequest(1, colaborador.matricula(), colaborador.salario()));
         return ColaboradorMapper.toResponse(colaboradorRepository.save(entity));
@@ -52,7 +53,7 @@ public class ColaboradorService {
             throw new NotFoundException("Colaborador não encontrado para id: " + id);
         }
 
-        Colaborador colaboradorAtualizado = Colaborador.builder()
+        ColaboradorPadrao colaboradorAtualizado = ColaboradorPadrao.builder()
                 .id(id)
                 .nome(request.nome())
                 .salario(request.salario())

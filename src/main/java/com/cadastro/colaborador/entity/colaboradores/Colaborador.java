@@ -11,21 +11,21 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Data
-@SuperBuilder
 @Component
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Colaborador {
+public abstract class Colaborador {
 
-    private int id;
-
-    @NotBlank
-    private String matricula;
+    protected int id;
 
     @NotBlank
-    private String nome;
+    protected String matricula;
+
+    @NotBlank
+    protected String nome;
 
     @Positive
-    private BigDecimal salario;
-    private TipoColaborador tipo;
+    protected BigDecimal salario;
+    protected TipoColaborador tipo;
 }
