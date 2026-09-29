@@ -1,9 +1,31 @@
 services:
   java:
     image: eclipse-temurin:21-jdk
-    container_name: java21
+    container_name: cadastro-colaborador-java
     working_dir: /app
     volumes:
       - .:/app
+      - gradle-cache:/root/.gradle
+    environment:
+      TZ: America/Sao_Paulo
     tty: true
     stdin_open: true
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    container_name: cadastro-colaborador-postgres
+    environment:
+      POSTGRES_DB: colaborador
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      TZ: America/Sao_Paulo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  gradle-cache:
+  postgres-data:
