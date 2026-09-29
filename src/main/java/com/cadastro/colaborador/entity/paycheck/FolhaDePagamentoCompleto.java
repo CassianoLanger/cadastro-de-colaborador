@@ -1,6 +1,6 @@
 package com.cadastro.colaborador.entity.paycheck;
 
-import com.cadastro.colaborador.entity.ColaboradorPadrao;
+import com.cadastro.colaborador.entity.colaboradores.ColaboradorPadrao;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorComissionado;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
 import lombok.Builder;
