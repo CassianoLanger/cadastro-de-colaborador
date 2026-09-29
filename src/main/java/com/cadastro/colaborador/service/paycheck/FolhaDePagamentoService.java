@@ -18,20 +18,19 @@ import java.util.Map;
 public class FolhaDePagamentoService {
 
     private final FolhaDePagamantoRepository repository;
-    private final FolhaDePagamentoCompleto relatorioCompleto;
     private final ColaboradorPadraoRepository colaboradorPadraoRepository;
     private final ColaboradorProducaoRepository colaboradorProducaoRepository;
     private final ColaboradorComissionadoRepository colaboradorComissionadoRepository;
 
-    public FolhaDePagamentoCompleto gerarFolhaDePagamentoCompleto(){
-        relatorioCompleto.setColaboradores(colaboradorPadraoRepository.getAll());
-        relatorioCompleto.setColaboradoresProducao(colaboradorProducaoRepository.getAll());
-        relatorioCompleto.setColaboradoresComissionados(colaboradorComissionadoRepository.getAll());
-        relatorioCompleto.setFolhaDePagamento(getFolhaDePagamento());
-        return relatorioCompleto;
+    public FolhaDePagamentoCompleto gerarFolhaDePagamentoCompleto() {
+
+        return FolhaDePagamentoCompleto.builder()
+                .colaboradores(colaboradorPadraoRepository.getAll())
+                .colaboradoresProducao(colaboradorProducaoRepository.getAll())
+                .colaboradoresComissionados(colaboradorComissionadoRepository.getAll())
+                .folhaDePagamento(getFolhaDePagamento())
+                .build();
     }
-
-
 
     private Map<Integer, FolhaDePagamento> getFolhaDePagamento(){
         return repository.getAll();
