@@ -1,7 +1,7 @@
 services:
   java:
     image: eclipse-temurin:21-jdk
-    container_name: cadastro-colaborador-java
+    container_name: java
     working_dir: /app
     volumes:
       - .:/app
@@ -15,7 +15,7 @@ services:
 
   postgres:
     image: postgres:17
-    container_name: cadastro-colaborador-postgres
+    container_name: postgres
     environment:
       POSTGRES_DB: colaborador
       POSTGRES_USER: ${DATABASE_USERNAME}
