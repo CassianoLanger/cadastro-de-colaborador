@@ -2,6 +2,7 @@ package com.cadastro.colaborador.service.colaboradores;
 
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorComissionado;
 import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.exception.NotFoundException;
 import com.cadastro.colaborador.mapper.colaboradores.ColaboradorComissionadoMapper;
 import com.cadastro.colaborador.repository.colaboradores.ColaboradorComissionadoRepository;
 import com.cadastro.colaborador.request.colaboradores.ColaboradorComissionadoRequest;
@@ -13,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.cadastro.colaborador.exception.NotFoundException;
 import static java.util.Objects.isNull;
 
 @Service

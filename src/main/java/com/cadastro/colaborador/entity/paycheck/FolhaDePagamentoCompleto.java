@@ -1,9 +1,12 @@
 package com.cadastro.colaborador.entity.paycheck;
 
-import com.cadastro.colaborador.entity.colaboradores.ColaboradorPadrao;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorComissionado;
+import com.cadastro.colaborador.entity.colaboradores.ColaboradorPadrao;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 

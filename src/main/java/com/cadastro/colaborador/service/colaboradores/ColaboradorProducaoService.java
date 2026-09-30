@@ -2,6 +2,7 @@ package com.cadastro.colaborador.service.colaboradores;
 
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
 import com.cadastro.colaborador.entity.colaboradores.TipoColaborador;
+import com.cadastro.colaborador.exception.NotFoundException;
 import com.cadastro.colaborador.mapper.colaboradores.ColaboradorProducaoMapper;
 import com.cadastro.colaborador.repository.colaboradores.ColaboradorProducaoRepository;
 import com.cadastro.colaborador.request.colaboradores.ColaboradorProducaoRequest;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.cadastro.colaborador.exception.NotFoundException;
 import static java.util.Objects.isNull;
 
 @Service
