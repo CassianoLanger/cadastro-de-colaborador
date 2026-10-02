@@ -1,0 +1,6 @@
+CREATE TABLE Colaborador_Comissionado (
+                id_colaborador INTEGER NOT NULL,
+                valor_vendas DOUBLE PRECISION NOT NULL,
+                percentual_comissao DOUBLE PRECISION NOT NULL,
+                CONSTRAINT id PRIMARY KEY (id_colaborador)
+);

@@ -1,0 +1,4 @@
+CREATE TABLE Colaborador_Padrao (
+                id_colaborador INTEGER NOT NULL,
+                CONSTRAINT id PRIMARY KEY (id_colaborador)
+);

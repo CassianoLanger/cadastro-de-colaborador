@@ -1,0 +1,6 @@
+ALTER TABLE Colaborador_Comissionado ADD CONSTRAINT colaborador_colaborador_comissionado_fk
+FOREIGN KEY (id_colaborador)
+REFERENCES Colaborador (id_colaborador)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
