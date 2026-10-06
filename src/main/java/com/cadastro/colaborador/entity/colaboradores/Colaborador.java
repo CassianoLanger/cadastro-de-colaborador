@@ -1,5 +1,7 @@
 package com.cadastro.colaborador.entity.colaboradores;
 
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -15,17 +17,24 @@ import java.math.BigDecimal;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "colaborador")
+@Table(name = "colaborador")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Colaborador {
 
-    protected int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank
-    protected String matricula;
-
-    @NotBlank
-    protected String nome;
+    @Column(name = "nome", nullable = false)
+    private String nome;
 
     @Positive
-    protected BigDecimal salario;
-    protected TipoColaborador tipo;
+    @Column(name = "salario", precision = 19, scale = 2, nullable = false)
+    private BigDecimal salario;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_colaborador", nullable = false)
+    private TipoColaborador tipoColaborador;
 }
