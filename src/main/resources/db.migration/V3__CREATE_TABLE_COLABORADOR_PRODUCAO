@@ -1,7 +1,0 @@
-
-CREATE TABLE Colaborador_Producao (
-                id_colaborador INTEGER NOT NULL,
-                quantidade_produzida INTEGER NOT NULL,
-                valor_por_unidade DOUBLE PRECISION NOT NULL,
-                CONSTRAINT id PRIMARY KEY (id_colaborador)
-);
