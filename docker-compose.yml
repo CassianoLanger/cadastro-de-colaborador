@@ -15,7 +15,7 @@ services:
 
   postgres:
     image: postgres:17
-    container_name: postgres
+    container_name: postgresql
     environment:
       POSTGRES_DB: colaborador
       POSTGRES_USER: ${DATABASE_USERNAME}
