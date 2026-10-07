@@ -8,16 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Data
-@Component
+@Entity
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "colaborador")
 @Table(name = "colaborador")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Colaborador {
@@ -26,8 +24,11 @@ public abstract class Colaborador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "matricula", length = 255)
+    private String matricula;
+
     @NotBlank
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", length = 255, nullable = false)
     private String nome;
 
     @Positive
@@ -35,6 +36,6 @@ public abstract class Colaborador {
     private BigDecimal salario;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_colaborador", nullable = false)
+    @Column(name = "tipo_colaborador", length = 255, nullable = false)
     private TipoColaborador tipoColaborador;
 }

@@ -10,10 +10,11 @@ public class ColaboradorComissionadoMapper {
 
     public ColaboradorComissionadoResponse toResponse(ColaboradorComissionado entity) {
         return ColaboradorComissionadoResponse.builder()
+                .id(entity.getId())
                 .matricula(entity.getMatricula())
                 .nome(entity.getNome())
                 .salario(entity.getSalario())
-                .tipo(entity.getTipo())
+                .tipo(entity.getTipoColaborador())
                 .valorDasVendas(entity.getValorDasVendas())
                 .percentualDeComissao(entity.getPercentualDeComissao())
                 .comissao(entity.getComissao())
@@ -22,6 +23,7 @@ public class ColaboradorComissionadoMapper {
 
     public ColaboradorComissionado toEntity(ColaboradorComissionadoRequest request) {
         return ColaboradorComissionado.builder()
+                .matricula(request.matricula())
                 .nome(request.nome())
                 .salario(request.salario())
                 .valorDasVendas(request.valorDasVendas())

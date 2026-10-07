@@ -6,5 +6,5 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record ColaboradorComissionadoResponse(String matricula, String nome, BigDecimal salario, TipoColaborador tipo, double valorDasVendas, double percentualDeComissao, BigDecimal comissao) {
+public record ColaboradorComissionadoResponse(Long id, String matricula, String nome, BigDecimal salario, TipoColaborador tipo, BigDecimal valorDasVendas, BigDecimal percentualDeComissao, BigDecimal comissao) {
 }

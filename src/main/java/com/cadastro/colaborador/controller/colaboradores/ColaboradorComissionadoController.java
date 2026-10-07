@@ -28,7 +28,7 @@ public class ColaboradorComissionadoController implements SwaggerColaboradorComi
     private final ColaboradorComissionadoService colaboradorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ColaboradorComissionadoResponse> getColaborador(@PathVariable("id") int id) {
+    public ResponseEntity<ColaboradorComissionadoResponse> getColaborador(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
@@ -39,18 +39,18 @@ public class ColaboradorComissionadoController implements SwaggerColaboradorComi
 
     @PutMapping("/{id}")
     public ResponseEntity<ColaboradorComissionadoResponse> putColaborador(@RequestBody @Valid ColaboradorComissionadoRequest colaborador,
-                                                                          @PathVariable int id) {
+                                                                          @PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteColaborador(@PathVariable int id) {
+    public void deleteColaborador(@PathVariable("id") Long id) {
         colaboradorService.deleteColaborador(id);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Map<Integer, ColaboradorComissionadoResponse>> getAll() {
+    public ResponseEntity<Map<Long, ColaboradorComissionadoResponse>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
     }
 }

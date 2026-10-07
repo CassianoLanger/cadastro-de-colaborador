@@ -25,7 +25,7 @@ public interface SwaggerColaborador{
     })
     ResponseEntity<ColaboradorResponse> getColaborador(
             @Parameter(description = "ID do colaborador", example = "1", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 
     @Operation(summary = "Cria um novo colaborador",
             description = "Cadastra um colaborador e retorna os dados persistidos com o novo ID")
@@ -47,7 +47,7 @@ public interface SwaggerColaborador{
             @Parameter(description = "Dados do colaborador", required = true)
             @Valid @RequestBody ColaboradorRequest colaborador,
             @Parameter(description = "ID do colaborador a ser atualizado", example = "1", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 
     @Operation(summary = "Remove um colaborador",
             description = "Remove o colaborador informado")
@@ -57,7 +57,7 @@ public interface SwaggerColaborador{
     })
     void deleteColaborador(
             @Parameter(description = "ID do colaborador a ser removido", example = "1", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 
 
     @Operation(summary = "Busca todos os colaboradores",
@@ -66,5 +66,5 @@ public interface SwaggerColaborador{
             @ApiResponse(responseCode = "204", description = "Colaboradores encontrados"),
             @ApiResponse(responseCode = "404", description = "Colaboradores não encontrados")
     })
-    ResponseEntity<Map<Integer, ColaboradorResponse>> getAll();
+    ResponseEntity<Map<Long, ColaboradorResponse>> getAll();
 }

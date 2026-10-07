@@ -13,11 +13,11 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
 @Data
+@Entity
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "colaborador_comissionado")
 @Table(name = "colaborador_comissionado")
 public class ColaboradorComissionado extends Colaborador {
 

@@ -10,10 +10,11 @@ public class ColaboradorProducaoMapper {
 
     public ColaboradorProducaoResponse toResponse(ColaboradorProducao entity) {
         return ColaboradorProducaoResponse.builder()
+                .id(entity.getId())
                 .matricula(entity.getMatricula())
                 .nome(entity.getNome())
                 .salario(entity.getSalario())
-                .tipo(entity.getTipo())
+                .tipo(entity.getTipoColaborador())
                 .quantidadeProduzida(entity.getQuantidadeProduzida())
                 .valorPagoPorUnidade(entity.getValorUnidade())
                 .build();
@@ -21,6 +22,7 @@ public class ColaboradorProducaoMapper {
 
     public ColaboradorProducao toEntity(ColaboradorProducaoRequest request) {
         return ColaboradorProducao.builder()
+                .matricula(request.matricula())
                 .nome(request.nome())
                 .salario(request.salario())
                 .quantidadeProduzida(request.quantidadeProduzida())

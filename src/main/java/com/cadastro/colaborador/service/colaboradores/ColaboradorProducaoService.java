@@ -13,55 +13,48 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.isNull;
-
 @Service
 @RequiredArgsConstructor
 public class ColaboradorProducaoService {
-
     private final ColaboradorProducaoRepository colaboradorRepository;
 
-    public ColaboradorProducaoResponse getColaborador(int id) {
-        ColaboradorProducao entity = colaboradorRepository.getById(id);
-        if (isNull(entity)) {
-            throw new NotFoundException("Colaborador produção não encontrado para id: " + id);
-        }
-        return ColaboradorProducaoMapper.toResponse(entity);
+    public ColaboradorProducaoResponse getColaborador(Long id) {
+        return ColaboradorProducaoMapper.toResponse(findColaborador(id));
     }
 
-    public ColaboradorProducaoResponse saveColaborador(ColaboradorProducaoRequest colaborador) {
-        ColaboradorProducao entity = ColaboradorProducaoMapper.toEntity(colaborador);
-        entity.setTipo(TipoColaborador.PRODUCAO);
+    public ColaboradorProducaoResponse saveColaborador(ColaboradorProducaoRequest request) {
+        ColaboradorProducao entity = ColaboradorProducaoMapper.toEntity(request);
+        entity.setTipoColaborador(TipoColaborador.PRODUCAO);
         return ColaboradorProducaoMapper.toResponse(colaboradorRepository.save(entity));
     }
 
-    public Map<Integer, ColaboradorProducaoResponse> getAll() {
-        return colaboradorRepository.getAll().entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> ColaboradorProducaoMapper.toResponse(entry.getValue())
-                ));
+    public Map<Long, ColaboradorProducaoResponse> getAll() {
+        return colaboradorRepository.findAll().stream()
+                .collect(Collectors.toMap(ColaboradorProducao::getId, ColaboradorProducaoMapper::toResponse));
     }
 
-    public ColaboradorProducaoResponse updateColaborador(ColaboradorProducaoRequest request, int id) {
-        ColaboradorProducao existente = colaboradorRepository.getById(id);
-        if (isNull(existente)) {
-            throw new NotFoundException("Colaborador produção não encontrado para id: " + id);
+    public ColaboradorProducaoResponse updateColaborador(ColaboradorProducaoRequest request, Long id) {
+        ColaboradorProducao entity = findColaborador(id);
+        entity.setNome(request.nome());
+        entity.setMatricula(request.matricula());
+        entity.setSalario(request.salario());
+        entity.setQuantidadeProduzida(request.quantidadeProduzida());
+        entity.setValorUnidade(request.valorPagoPorUnidade());
+        return ColaboradorProducaoMapper.toResponse(colaboradorRepository.save(entity));
+    }
+
+    public void deleteColaborador(Long id) {
+        if (!colaboradorRepository.existsById(id)) {
+            throw notFound(id);
         }
-
-        ColaboradorProducao colaboradorAtualizado = ColaboradorProducao.builder()
-                .id(id)
-                .nome(request.nome())
-                .salario(request.salario())
-                .quantidadeProduzida(request.quantidadeProduzida())
-                .valorUnidade(request.valorPagoPorUnidade())
-                .tipo(existente.getTipo())
-                .build();
-
-        return ColaboradorProducaoMapper.toResponse(colaboradorRepository.update(colaboradorAtualizado));
+        colaboradorRepository.deleteById(id);
     }
 
-    public void deleteColaborador(int id) {
-        colaboradorRepository.delete(id);
+    private ColaboradorProducao findColaborador(Long id) {
+        return colaboradorRepository.findById(id).orElseThrow(() -> notFound(id));
+    }
+
+    private NotFoundException notFound(Long id) {
+        return new NotFoundException("Colaborador de produção não encontrado para id: " + id);
     }
 }

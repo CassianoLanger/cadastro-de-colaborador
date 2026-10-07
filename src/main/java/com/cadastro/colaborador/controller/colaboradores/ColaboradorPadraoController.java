@@ -28,7 +28,7 @@ public class ColaboradorPadraoController implements SwaggerColaborador {
     private final ColaboradorPadraoService colaboradorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ColaboradorResponse> getColaborador(@PathVariable("id") int id){
+    public ResponseEntity<ColaboradorResponse> getColaborador(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
@@ -39,18 +39,18 @@ public class ColaboradorPadraoController implements SwaggerColaborador {
 
     @PutMapping("/{id}")
     public ResponseEntity<ColaboradorResponse> putColaborador(@RequestBody @Valid ColaboradorRequest colaborador,
-                                                              @PathVariable int id){
+                                                              @PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteColaborador(@PathVariable int id){
+    public void deleteColaborador(@PathVariable("id") Long id){
         colaboradorService.deleteColaborador(id);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Map<Integer, ColaboradorResponse>> getAll() {
+    public ResponseEntity<Map<Long, ColaboradorResponse>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
     }
 

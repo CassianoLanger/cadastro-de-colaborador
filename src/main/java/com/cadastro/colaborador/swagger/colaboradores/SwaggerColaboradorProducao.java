@@ -23,7 +23,7 @@ public interface SwaggerColaboradorProducao{
     })
     ResponseEntity<ColaboradorProducaoResponse> getColaborador(
             @Parameter(description = "ID do colaborador", example = "1", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 
     @Operation(summary = "Cria um novo colaborador",
             description = "Cadastra um colaborador e retorna os dados persistidos com o novo ID")
@@ -45,7 +45,7 @@ public interface SwaggerColaboradorProducao{
             @Parameter(description = "Dados do colaborador", required = true)
             @Valid @RequestBody ColaboradorProducaoRequest colaborador,
             @Parameter(description = "ID do colaborador a ser atualizado", example = "1", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 
     @Operation(summary = "Remove um colaborador",
             description = "Remove o colaborador informado")
@@ -55,5 +55,5 @@ public interface SwaggerColaboradorProducao{
     })
     void deleteColaborador(
             @Parameter(description = "ID do Colaborador a ser removido", required = true)
-            @PathVariable("id") int id);
+            @PathVariable("id") Long id);
 }

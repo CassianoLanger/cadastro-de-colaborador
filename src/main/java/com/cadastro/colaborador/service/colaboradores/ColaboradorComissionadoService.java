@@ -11,63 +11,60 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
 public class ColaboradorComissionadoService {
+    private static final BigDecimal PERCENTUAL = BigDecimal.valueOf(100);
 
     private final ColaboradorComissionadoRepository colaboradorRepository;
 
-    public ColaboradorComissionadoResponse getColaborador(int id) {
-        ColaboradorComissionado entity = colaboradorRepository.getById(id);
-        if (isNull(entity)) {
-            throw new NotFoundException("Colaborador comissionado não encontrado para id: " + id);
-        }
-        return ColaboradorComissionadoMapper.toResponse(entity);
+    public ColaboradorComissionadoResponse getColaborador(Long id) {
+        return ColaboradorComissionadoMapper.toResponse(findColaborador(id));
     }
 
-    public ColaboradorComissionadoResponse saveColaborador(ColaboradorComissionadoRequest colaborador) {
-        ColaboradorComissionado entity = ColaboradorComissionadoMapper.toEntity(colaborador);
-        BigDecimal comissao = BigDecimal.valueOf(entity.getValorDasVendas() * entity.getPercentualDeComissao() / 100.0);
-        entity.setTipo(TipoColaborador.COMISSIONADO);
-        entity.setComissao(comissao);
+    public ColaboradorComissionadoResponse saveColaborador(ColaboradorComissionadoRequest request) {
+        ColaboradorComissionado entity = ColaboradorComissionadoMapper.toEntity(request);
+        entity.setTipoColaborador(TipoColaborador.COMISSIONADO);
+        entity.setComissao(calcularComissao(entity.getValorDasVendas(), entity.getPercentualDeComissao()));
         return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.save(entity));
     }
 
-    public Map<Integer, ColaboradorComissionadoResponse> getAll() {
-        return colaboradorRepository.getAll().entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> ColaboradorComissionadoMapper.toResponse(entry.getValue())
-                ));
+    public Map<Long, ColaboradorComissionadoResponse> getAll() {
+        return colaboradorRepository.findAll().stream()
+                .collect(Collectors.toMap(ColaboradorComissionado::getId, ColaboradorComissionadoMapper::toResponse));
     }
 
-    public ColaboradorComissionadoResponse updateColaborador(ColaboradorComissionadoRequest request, int id) {
-        ColaboradorComissionado existente = colaboradorRepository.getById(id);
-        if (isNull(existente)) {
-            throw new NotFoundException("Colaborador comissionado não encontrado para id: " + id);
+    public ColaboradorComissionadoResponse updateColaborador(ColaboradorComissionadoRequest request, Long id) {
+        ColaboradorComissionado entity = findColaborador(id);
+        entity.setNome(request.nome());
+        entity.setMatricula(request.matricula());
+        entity.setSalario(request.salario());
+        entity.setValorDasVendas(request.valorDasVendas());
+        entity.setPercentualDeComissao(request.percentualDeComissao());
+        entity.setComissao(calcularComissao(entity.getValorDasVendas(), entity.getPercentualDeComissao()));
+        return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.save(entity));
+    }
+
+    public void deleteColaborador(Long id) {
+        if (!colaboradorRepository.existsById(id)) {
+            throw notFound(id);
         }
-
-        BigDecimal comissao = BigDecimal.valueOf(request.valorDasVendas() * request.percentualDeComissao() / 100.0);
-
-        ColaboradorComissionado colaboradorAtualizado = ColaboradorComissionado.builder()
-                .id(id)
-                .nome(request.nome())
-                .salario(request.salario())
-                .valorDasVendas(request.valorDasVendas())
-                .percentualDeComissao(request.percentualDeComissao())
-                .tipo(existente.getTipo())
-                .comissao(comissao)
-                .build();
-
-        return ColaboradorComissionadoMapper.toResponse(colaboradorRepository.update(colaboradorAtualizado));
+        colaboradorRepository.deleteById(id);
     }
 
-    public void deleteColaborador(int id) {
-        colaboradorRepository.delete(id);
+    private ColaboradorComissionado findColaborador(Long id) {
+        return colaboradorRepository.findById(id).orElseThrow(() -> notFound(id));
+    }
+
+    private NotFoundException notFound(Long id) {
+        return new NotFoundException("Colaborador comissionado não encontrado para id: " + id);
+    }
+
+    private BigDecimal calcularComissao(BigDecimal vendas, BigDecimal percentual) {
+        return vendas.multiply(percentual).divide(PERCENTUAL, 2, RoundingMode.HALF_UP);
     }
 }

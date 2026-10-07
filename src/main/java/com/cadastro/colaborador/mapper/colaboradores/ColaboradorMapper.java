@@ -10,15 +10,17 @@ public class ColaboradorMapper {
     
     public ColaboradorResponse toResponse(ColaboradorPadrao entity){
         return ColaboradorResponse.builder()
+                .id(entity.getId())
                 .matricula(entity.getMatricula())
                 .nome(entity.getNome())
                 .salario(entity.getSalario())
-                .tipo(entity.getTipo())
+                .tipo(entity.getTipoColaborador())
                 .build();
     }
     
     public ColaboradorPadrao toEntity(ColaboradorRequest request){
         return ColaboradorPadrao.builder()
+                .matricula(request.matricula())
                 .nome(request.nome())
                 .salario(request.salario())
                 .build();

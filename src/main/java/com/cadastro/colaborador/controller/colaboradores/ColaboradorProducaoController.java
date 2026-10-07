@@ -29,7 +29,7 @@ public class ColaboradorProducaoController implements SwaggerColaboradorProducao
     private final ColaboradorProducaoService colaboradorService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ColaboradorProducaoResponse> getColaborador(@PathVariable("id") int id){
+    public ResponseEntity<ColaboradorProducaoResponse> getColaborador(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.getColaborador(id));
     }
 
@@ -40,18 +40,18 @@ public class ColaboradorProducaoController implements SwaggerColaboradorProducao
 
     @PutMapping("/{id}")
     public ResponseEntity<ColaboradorProducaoResponse> putColaborador(@RequestBody @Valid ColaboradorProducaoRequest colaborador,
-                                                                      @PathVariable int id){
+                                                                      @PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(colaboradorService.updateColaborador(colaborador, id));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteColaborador(@PathVariable int id){
+    public void deleteColaborador(@PathVariable("id") Long id){
         colaboradorService.deleteColaborador(id);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Map<Integer, ColaboradorProducaoResponse>> getAll() {
+    public ResponseEntity<Map<Long, ColaboradorProducaoResponse>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body((colaboradorService.getAll()));
     }
 }
