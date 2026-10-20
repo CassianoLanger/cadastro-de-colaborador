@@ -1,5 +1,6 @@
 package com.cadastro.colaborador.service.paycheck;
 
+import com.cadastro.colaborador.entity.colaboradores.Colaborador;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorComissionado;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorPadrao;
 import com.cadastro.colaborador.entity.colaboradores.ColaboradorProducao;
@@ -59,8 +60,8 @@ public class FolhaDePagamentoService {
         return paraFolha(colaborador, quantidade.multiply(valorUnidade));
     }
 
-    private FolhaDePagamentoResponse paraFolha(com.cadastro.colaborador.entity.colaboradores.Colaborador colaborador,
-                                                BigDecimal adicional) {
+    private FolhaDePagamentoResponse paraFolha(Colaborador colaborador,
+                                               BigDecimal adicional) {
         BigDecimal adicionalSeguro = Objects.requireNonNullElse(adicional, BigDecimal.ZERO);
         return FolhaDePagamentoResponse.builder()
                 .colaboradorId(colaborador.getId())
