@@ -3,7 +3,7 @@ package com.cadastro.colaborador.entity.colaboradores;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,11 +21,11 @@ import java.math.BigDecimal;
 @Table(name = "colaborador_comissionado")
 public class ColaboradorComissionado extends Colaborador {
 
-    @Positive
+    @PositiveOrZero
     @Column(name = "valor_das_vendas", precision = 19, scale = 2, nullable = false)
     private BigDecimal valorDasVendas;
 
-    @Positive
+    @PositiveOrZero
     @Column(name = "percentual_de_comissao", precision = 19, scale = 2, nullable = false)
     private BigDecimal percentualDeComissao;
 

@@ -3,7 +3,7 @@ package com.cadastro.colaborador.entity.colaboradores;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public abstract class Colaborador {
     @Column(name = "nome", length = 255, nullable = false)
     private String nome;
 
-    @Positive
+    @PositiveOrZero
     @Column(name = "salario", precision = 19, scale = 2, nullable = false)
     private BigDecimal salario;
 

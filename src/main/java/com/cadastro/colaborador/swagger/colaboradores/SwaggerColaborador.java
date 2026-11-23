@@ -63,8 +63,7 @@ public interface SwaggerColaborador{
     @Operation(summary = "Busca todos os colaboradores",
             description = "Busca todos os colaboradores disponiveis")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Colaboradores encontrados"),
-            @ApiResponse(responseCode = "404", description = "Colaboradores não encontrados")
+            @ApiResponse(responseCode = "200", description = "Colaboradores encontrados")
     })
     ResponseEntity<Map<Long, ColaboradorResponse>> getAll();
 }
